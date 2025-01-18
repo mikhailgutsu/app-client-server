@@ -23,6 +23,7 @@ db.connect((err) => {
   }
   console.log("Connected to MySQL");
 });
+
 // Example POST endpoint
 app.post("/tasks", (req, res) => {
   const { title, description, status, date } = req.body; // Extract fields from the request body
@@ -81,6 +82,31 @@ app.post("/login", (req, res) => {
     } else {
       // No matching user found
       res.status(401).send("Invalid username or password");
+    }
+  });
+});
+
+// New endpoint to check login and password in the "login" table
+app.post("/check-login", (req, res) => {
+  const { login, password } = req.body; // Extract login and password from request body
+  const query = "SELECT * FROM login WHERE login = ? AND password = ?"; // Query to search the login table
+
+  // Execute the query with the provided login and password
+  db.query(query, [login, password], (err, results) => {
+    if (err) {
+      console.error("Error checking login in the database:", err);
+      res.status(500).send("Server error");
+    } else if (results.length > 0) {
+      // Login and password match, return success response
+      const user = results[0];
+      res.status(200).json({
+        id: user.id,
+        login: user.login,
+        status: "Login successful",
+      });
+    } else {
+      // Login and password do not match
+      res.status(401).send("Invalid login or password");
     }
   });
 });
