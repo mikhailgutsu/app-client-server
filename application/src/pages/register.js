@@ -13,7 +13,6 @@ const Register = () => {
     const randomFourDigitNumber = () => Math.floor(Math.random() * 9000) + 1000;
     try {
       const response = await axios.post("http://localhost:5000/register", {
-        id: randomFourDigitNumber,
         login: login,
         password: password,
         user: user,

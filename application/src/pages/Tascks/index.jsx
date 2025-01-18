@@ -49,8 +49,10 @@ const Tascks = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const randomFourDigitNumber = () => Math.floor(Math.random() * 9000) + 1000;
     try {
       const response = await axios.post("http://localhost:5000/tasks", {
+        id: randomFourDigitNumber,
         title: "privet",
         description: "description",
         status: "done",
@@ -63,7 +65,6 @@ const Tascks = () => {
   };
 
   const onDelete = async (id) => {
-    e.preventDefault();
     try {
       const response = await axios.delete(`http://localhost:5000/tasks${id}`);
       console.log(response.data);
