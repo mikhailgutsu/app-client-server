@@ -62,6 +62,8 @@ const Tascks = () => {
     }
   };
 
+  console.log(dataTask);
+
   const onDelete = async (id) => {
     try {
       const response = await axios.delete(`http://localhost:5000/tasks/${id}`);
