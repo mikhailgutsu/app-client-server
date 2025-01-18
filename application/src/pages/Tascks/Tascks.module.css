@@ -1,0 +1,139 @@
+.tascksWrapper{
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0px;
+}
+.tascksBoard{
+  width: fit-content;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+.boardColumn{
+  background-color: #F6F6F6;
+  border-radius: 17px;
+  width: 300px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.boardTitle{
+  width: 100%;
+  height: fit-content;
+  padding: 10px 15px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.boardTitle > p{
+  font-size: 20px;
+}
+.ticketPlace{
+  width: 100%;
+  height: 100%;
+  padding: 0px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+}
+.ticketWrapper{
+  background-color: #E0E4EA;
+  width: 100%;
+  height: fit-content;
+  border-radius: 17px;
+  padding: 10px 15px;
+  display: flex;
+  flex-direction: row;
+}
+.ticketContent{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.TicketTitle{
+  width: 100%;
+  height: fit-content;
+}
+.TicketData{
+  width: 100%;
+  height: fit-content;
+}
+.TicketData > p{
+  font-size: 12px;
+}
+.ticketActions{
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+
+}
+.ticketStatus{
+  background-color: #FF9533;
+  width: fit-content;
+  padding: 3px 5px;
+  border-radius: 14px;  
+}
+.ticketStatus > p{
+  color: white;
+  font-size: 12px;
+}
+.ticketButton{
+  font-size: 12px !important;
+  padding: 3px 5px !important;
+}
+
+.modal_input {
+  position: relative;
+  width: 100%;
+
+  &[data-type='location'] {
+    cursor: pointer !important;
+  }
+
+  &[data-type='location'] > label[data-shrink='false'] {
+    transform: translate(56px, 14px) scale(1) !important;
+  }
+
+  & > label {
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+
+    &[data-shrink='false'] {
+      transform: translate(14px, 14px) scale(1);
+    }
+  }
+
+  & > div {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 23px;
+    color: #212121;
+  }
+
+  & > div > input {
+    padding: 12.5px 16px;
+  }
+
+  & > div > fieldset {
+    border-radius: 12px;
+    border: 1px solid #efefef;
+
+    & > legend {
+      font-family: 'Montserrat', sans-serif;
+      font-style: normal;
+      font-weight: 400;
+    }
+  }
+}
