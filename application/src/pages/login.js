@@ -6,6 +6,7 @@ const Login = () => {
   const [login, setLogin] = useState();
   const [password, setPassword] = useState();
   const [user, setUser] = useState();
+  const navigate = useNavigate()
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -16,6 +17,9 @@ const Login = () => {
         password: password,
         user: user,
       });
+      if (response.data) {
+        navigate('/tasks');
+      }
       console.log(response.data);
     } catch (error) {
       console.error("Error during login:", error.response?.data || error);
