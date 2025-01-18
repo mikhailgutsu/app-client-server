@@ -49,10 +49,8 @@ const Tascks = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const randomFourDigitNumber = () => Math.floor(Math.random() * 9000) + 1000;
     try {
       const response = await axios.post("http://localhost:5000/tasks", {
-        id: randomFourDigitNumber,
         title: "privet",
         description: "description",
         status: "done",
@@ -66,12 +64,12 @@ const Tascks = () => {
 
   const onDelete = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:5000/tasks${id}`);
+      const response = await axios.delete(`http://localhost:5000/tasks/${id}`);
       console.log(response.data);
     } catch (error) {
       console.error("Ошибка при добавлении данных:", error);
     }
-  }
+  };
 
   const handleCloseAddTasck = () => {
     setOpenAddTask(false);
@@ -126,7 +124,7 @@ const Tascks = () => {
                       <div className={styles.ticketStatus}>
                         <p>{item.status}</p>
                       </div>
-                      <DeleteIcon onClick={() => onDelete(item.id)}/>
+                      <DeleteIcon onClick={() => onDelete(item.id)} />
                     </div>
                     <Button variant="outlined" className={styles.ticketButton}>
                       Move

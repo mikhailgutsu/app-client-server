@@ -26,10 +26,10 @@ db.connect((err) => {
 
 // Example POST endpoint
 app.post("/tasks", (req, res) => {
-  const { title, description, status, date } = req.body; // Extract fields from the request body
+  const { title, description, status, date } = req.body; // Remove 'id' from the request body
 
   const query =
-    "INSERT INTO tasks (id, title, description, status, date) VALUES (NULL, ?, ?, ?, ?)"; // Ensure ID is auto-incremented
+    "INSERT INTO tasks (title, description, status, date) VALUES (?, ?, ?, ?)"; // Exclude 'id'
 
   // Execute query with provided data
   db.query(query, [title, description, status, date], (err, result) => {
@@ -38,7 +38,7 @@ app.post("/tasks", (req, res) => {
       res.status(500).send("Server error");
     } else {
       res.status(201).send({
-        id: result.insertId, // Newly created task ID
+        id: result.insertId, // Auto-generated ID
         title,
         description,
         status,
