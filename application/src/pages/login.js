@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [login, setLogin] = useState();
   const [password, setPassword] = useState();
   const [user, setUser] = useState();
+  const navigate = useNavigate();
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -15,7 +17,9 @@ const Login = () => {
         password: password,
         user: user
       });
-      console.log(response.data);
+      if (response.data) {
+        navigate("/tasks");
+      }
     } catch (error) {
       console.error("Ошибка при добавлении данных:", error);
     }

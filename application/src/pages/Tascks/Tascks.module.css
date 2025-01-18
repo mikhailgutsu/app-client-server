@@ -153,3 +153,12 @@
 .modalViewTicketContent p:nth-child(2) {
   font-size: 17px;
 }
+
+.topAction {
+  display: flex;
+  align-items: center;
+}
+
+.topAction svg {
+  cursor: pointer;
+}

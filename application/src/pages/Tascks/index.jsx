@@ -4,6 +4,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
 
 const Tascks = () => {
@@ -23,6 +24,7 @@ const Tascks = () => {
     try {
       const response = await axios.get("http://localhost:5000/tasks");
       console.log(response.data);
+      setDataTask(response.data);
     } catch (error) {
       console.error("Ошибка при добавлении данных:", error);
     }
@@ -85,8 +87,11 @@ const Tascks = () => {
                 </div>
               </div>
               <div className={styles.ticketActions}>
-                <div className={styles.ticketStatus}>
-                  <p>Medium</p>
+                <div className={styles.topAction}>
+                  <div className={styles.ticketStatus}>
+                    <p>Medium</p>
+                  </div>
+                  <DeleteIcon />
                 </div>
                 <Button variant="outlined" className={styles.ticketButton}>Move</Button>
               </div>
