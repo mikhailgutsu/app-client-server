@@ -27,8 +27,9 @@ db.connect((err) => {
 // Example POST endpoint
 app.post("/tasks", (req, res) => {
   const { title, description, status, date } = req.body; // Extract fields from the request body
+
   const query =
-    "INSERT INTO tasks (title, description, status, date) VALUES (?, ?, ?, ?)"; // Update query to include the new fields
+    "INSERT INTO tasks (id, title, description, status, date) VALUES (NULL, ?, ?, ?, ?)"; // Ensure ID is auto-incremented
 
   // Execute query with provided data
   db.query(query, [title, description, status, date], (err, result) => {
@@ -37,7 +38,7 @@ app.post("/tasks", (req, res) => {
       res.status(500).send("Server error");
     } else {
       res.status(201).send({
-        id: result.insertId,
+        id: result.insertId, // Newly created task ID
         title,
         description,
         status,
