@@ -1,6 +1,6 @@
 .tascksWrapper{
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 51px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -136,4 +136,20 @@
       font-weight: 400;
     }
   }
+}
+
+.viewTicketModalTitle{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.modalViewTicketContent p:nth-child(1) {
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.modalViewTicketContent p:nth-child(2) {
+  font-size: 17px;
 }

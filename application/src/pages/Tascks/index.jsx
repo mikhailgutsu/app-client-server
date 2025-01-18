@@ -2,27 +2,53 @@ import React, { useState } from 'react';
 import styles from './Tascks.module.css';
 import CheckIcon from '@mui/icons-material/Check';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import CloseIcon from '@mui/icons-material/Close';
+import axios from 'axios';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
 
 const Tascks = () => {
   const [openAddTask, setOpenAddTask] = useState(false);
+  const [openViewTasck, setOpenViewTasck] = useState(false);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [priority, setPriority] = useState('normal');
 
-  const handleClickOpen = () => {
+  const handleClickOpenAddTasck = () => {
     setOpenAddTask(true);
   };
 
-  const handleClose = () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("http://localhost:5000/tasks", {
+        title: 'privet',
+        description: 'description',
+        status: 'done',
+        date: '12.01.2025',
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error("Ошибка при добавлении данных:", error);
+    }
+  };
+  
+  const handleCloseAddTasck = () => {
     setOpenAddTask(false);
+  };
+  
+  const handleClickOpenViewTasck = () => {
+    setOpenViewTasck(true);
+  }
+
+  const handleCloseViewTasck = () => {
+    setOpenViewTasck(false);
   };
 
   const handleFormSubmit = () => {
     setTitle('');
     setContent('');
     setPriority('normal');
-    handleClose();
+    handleCloseAddTasck();
   };
 
   return (
@@ -31,11 +57,11 @@ const Tascks = () => {
         <div className={styles.boardColumn}>
           <div className={styles.boardTitle}>
             <p>Open</p>
-            <AddCircleOutlineIcon color="primary" style={{ width: '20px' }} onClick={handleClickOpen} />
+            <AddCircleOutlineIcon color="primary" style={{ width: '20px' }} onClick={handleSubmit} />
           </div>
           <div className={styles.ticketPlace}>
             <div className={styles.ticketWrapper}>
-              <div className={styles.ticketContent}>
+              <div className={styles.ticketContent} onClick={()=>{handleClickOpenViewTasck()}}>
                 <div className={styles.TicketTitle}>
                   <p>Privet</p>
                 </div>
@@ -47,7 +73,7 @@ const Tascks = () => {
                 <div className={styles.ticketStatus}>
                   <p>Medium</p>
                 </div>
-                <Button variant="outlined" className={styles.ticketButton}>Outlined</Button>
+                <Button variant="outlined" className={styles.ticketButton}>Move</Button>
               </div>
             </div>
           </div>
@@ -70,28 +96,12 @@ const Tascks = () => {
             <CheckIcon color="success" style={{ width: "20px" }} />
           </div>
           <div className={styles.ticketPlace}>
-            <div className={styles.ticketWrapper}>
-              <div className={styles.ticketContent}>
-                <div className={styles.TicketTitle}>
-                  <p>Privet</p>
-                </div>
-                <div className={styles.TicketData}>
-                  <p>Data add : 12/04/24</p>
-                </div>
-              </div>
-              <div className={styles.ticketActions}>
-                <div className={styles.ticketStatus}>
-                  <p>Medium</p>
-                </div>
-                <Button variant="outlined" className={styles.ticketButton}>Outlined</Button>
-              </div>
-            </div>
           </div>
         </div>
       </div>
       <Dialog
         open={openAddTask}
-        onClose={handleClose}
+        onClose={handleCloseAddTasck}
         sx={{
           '& .MuiPaper-root': {
             borderRadius: '17px',
@@ -129,9 +139,38 @@ const Tascks = () => {
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleCloseAddTasck}>Cancel</Button>
           <Button onClick={handleFormSubmit} color="primary" variant="contained">Add</Button>
         </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={openViewTasck}
+        onClose={handleCloseViewTasck}
+        sx={{
+          '& .MuiPaper-root': {
+            borderRadius: '17px',
+            width: '800px',
+            maxWidth: '800px',
+          }
+        }}
+      >
+        <DialogTitle>
+          <div className={styles.viewTicketModalTitle}>
+            <div className={styles.ticketStatus}>
+              <p>Medium</p>
+            </div>
+            <CloseIcon sx={{ color: 'red', width: '20px'}} onClick={()=>handleCloseViewTasck()}/>
+          </div>
+        </DialogTitle>
+        <DialogContent>
+          <div className={styles.modalViewTicketContent}>
+            <p>Privet</p>
+            <p> blblasblslbklf dlkfb dkjfnb kdjnf bkdnf kjndflk dnfkl jbnfsdfs sdf sdf sdfsdf sdf sdf sdf sdf sdf sdfsdf sdf sd fsd fsd fsd fdfs dfs df sdf sdf sd fdkf jbndlkf jbn jnk jn kn kn lkn lkjn kj nklj n dklf jnbdk jfnbdklfjb ndklfb </p>
+          </div>
+          <div></div>
+        </DialogContent>
+
       </Dialog>
     </div>
   );
