@@ -1,13 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 
 const Login = () => {
+  const [login, setLogin] = useState();
+  const [password, setPassword] = useState();
+  const [user, setUser] = useState();
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    console.log(login)
+    try {
+      const response = await axios.post("http://localhost:5000/check-login", {
+        login: login,
+        password: password,
+        user: user
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error("Ошибка при добавлении данных:", error);
+    }
+  }
+
   return (
     <div style={styles.container}>
       <h1 style={styles.heading}>Log In</h1>
       <form style={styles.form}>
-        <input type="text" placeholder="Username" style={styles.input} />
-        <input type="password" placeholder="Password" style={styles.input} />
-        <button style={styles.button}>Submit</button>
+        <input type="text" value={login} placeholder="Login" onChange={(e) => setLogin(e.target.value)} style={styles.input} />
+        <input type="text" value={user} placeholder="User" onChange={(e) => setUser(e.target.value)} style={styles.input} />
+        <input type="password" value={password} placeholder="Password" onChange={(e) => setPassword(e.target.value)} style={styles.input} />
+        <button onClick={onSubmit} style={styles.button}>Submit</button>
       </form>
     </div>
   );

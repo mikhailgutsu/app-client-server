@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Tascks.module.css';
 import CheckIcon from '@mui/icons-material/Check';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -11,11 +11,26 @@ const Tascks = () => {
   const [openViewTasck, setOpenViewTasck] = useState(false);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [date, setDate] = useState('');
   const [priority, setPriority] = useState('normal');
+  const [dataTask, setDataTask] = useState()
 
   const handleClickOpenAddTasck = () => {
     setOpenAddTask(true);
   };
+
+  const getData = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/tasks");
+      console.log(response.data);
+    } catch (error) {
+      console.error("Ошибка при добавлении данных:", error);
+    }
+  }
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
