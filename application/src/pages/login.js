@@ -6,33 +6,50 @@ const Login = () => {
   const [login, setLogin] = useState();
   const [password, setPassword] = useState();
   const [user, setUser] = useState();
-  const navigate = useNavigate();
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log(login)
+    console.log("Logging in:", login, user);
     try {
-      const response = await axios.post("http://localhost:5000/check-login", {
+      const response = await axios.post("http://localhost:5000/login_page", {
         login: login,
         password: password,
-        user: user
+        user: user,
       });
-      if (response.data) {
-        navigate("/tasks");
-      }
+      console.log(response.data);
     } catch (error) {
-      console.error("Ошибка при добавлении данных:", error);
+      console.error("Error during login:", error.response?.data || error);
     }
-  }
+  };
 
   return (
     <div style={styles.container}>
       <h1 style={styles.heading}>Log In</h1>
-      <form style={styles.form}>
-        <input type="text" value={login} placeholder="Login" onChange={(e) => setLogin(e.target.value)} style={styles.input} />
-        <input type="text" value={user} placeholder="User" onChange={(e) => setUser(e.target.value)} style={styles.input} />
-        <input type="password" value={password} placeholder="Password" onChange={(e) => setPassword(e.target.value)} style={styles.input} />
-        <button onClick={onSubmit} style={styles.button}>Submit</button>
+      <form style={styles.form} onSubmit={onSubmit}>
+        <input
+          type="text"
+          value={login}
+          placeholder="Login"
+          onChange={(e) => setLogin(e.target.value)}
+          style={styles.input}
+        />
+        <input
+          type="text"
+          value={user}
+          placeholder="User"
+          onChange={(e) => setUser(e.target.value)}
+          style={styles.input}
+        />
+        <input
+          type="password"
+          value={password}
+          placeholder="Password"
+          onChange={(e) => setPassword(e.target.value)}
+          style={styles.input}
+        />
+        <button type="submit" style={styles.button}>
+          Submit
+        </button>
       </form>
     </div>
   );

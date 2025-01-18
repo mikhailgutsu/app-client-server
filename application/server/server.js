@@ -86,27 +86,27 @@ app.post("/login", (req, res) => {
   });
 });
 
-// New endpoint to check login and password in the "login" table
-app.post("/check-login", (req, res) => {
-  const { login, password } = req.body; // Extract login and password from request body
-  const query = "SELECT * FROM login WHERE login = ? AND password = ?"; // Query to search the login table
+app.post("/login_page", (req, res) => {
+  const { login, password, user } = req.body;
 
-  // Execute the query with the provided login and password
-  db.query(query, [login, password], (err, results) => {
+  // Correct table name and column names
+  const query =
+    "SELECT * FROM login_page WHERE login = ? AND password = ? AND user = ?";
+
+  db.query(query, [login, password, user], (err, results) => {
     if (err) {
       console.error("Error checking login in the database:", err);
       res.status(500).send("Server error");
     } else if (results.length > 0) {
-      // Login and password match, return success response
-      const user = results[0];
+      const userData = results[0];
       res.status(200).json({
-        id: user.id,
-        login: user.login,
+        id: userData.id,
+        login: userData.login,
+        user: userData.user,
         status: "Login successful",
       });
     } else {
-      // Login and password do not match
-      res.status(401).send("Invalid login or password");
+      res.status(401).send("Invalid login, password, or user");
     }
   });
 });
