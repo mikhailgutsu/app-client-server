@@ -62,6 +62,16 @@ const Tascks = () => {
     }
   };
 
+  const onDelete = async (id) => {
+    e.preventDefault();
+    try {
+      const response = await axios.delete(`http://localhost:5000/tasks${id}`);
+      console.log(response.data);
+    } catch (error) {
+      console.error("Ошибка при добавлении данных:", error);
+    }
+  }
+
   const handleCloseAddTasck = () => {
     setOpenAddTask(false);
   };
@@ -115,7 +125,7 @@ const Tascks = () => {
                       <div className={styles.ticketStatus}>
                         <p>{item.status}</p>
                       </div>
-                      <DeleteIcon />
+                      <DeleteIcon onClick={() => onDelete(item.id)}/>
                     </div>
                     <Button variant="outlined" className={styles.ticketButton}>
                       Move

@@ -10,9 +10,10 @@ const Register = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log("Logging in:", login, user);
+    const randomFourDigitNumber = () => Math.floor(Math.random() * 9000) + 1000;
     try {
       const response = await axios.post("http://localhost:5000/register", {
+        id: randomFourDigitNumber,
         login: login,
         password: password,
         user: user,
