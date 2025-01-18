@@ -1,52 +1,51 @@
-import express from "express";
-import mysql from "mysql";
-import bodyParser from "body-parser";
-import cors from "cors";
+const express = require("express");
+const cors = require("cors");
+const mysql = require("mysql");
 
 const app = express();
-const port = 5001;
+const port = 5000;
 
-// Enable CORS to allow requests from other origins
 app.use(cors());
+app.use(express.json());
 
-// Middleware to parse JSON requests
-app.use(bodyParser.json());
-
-// Configure MySQL database connection
+// Configure MySQL connection
 const db = mysql.createConnection({
-  host: "localhost", // Replace with your database host if not local
-  user: "root", // Replace with your MySQL username
-  password: "root", // Replace with your MySQL password
-  database: "client_server", // Replace with your database name
+  host: "localhost",
+  user: "root", // Your MySQL username
+  password: "root", // Your MySQL password
+  database: "client_server", // Your database name
 });
 
-// Connect to the database
 db.connect((err) => {
   if (err) {
-    console.log("Ошибка соединения с базой данных:", err);
-  } else {
-    console.log("Соединение с базой данных установлено");
+    console.error("Error connecting to MySQL:", err);
+    return;
   }
+  console.log("Connected to MySQL");
 });
+// Example POST endpoint
+app.post("/tasks", (req, res) => {
+  const { title, description, status, date } = req.body; // Extract fields from the request body
+  const query =
+    "INSERT INTO tasks (title, description, status, date) VALUES (?, ?, ?, ?)"; // Update query to include the new fields
 
-// Route to add a new user
-app.post("/add-user", (req, res) => {
-  const { login, password, user } = req.body;
-
-  // Replace 'your_table_name' with your actual table name
-  const sql =
-    "INSERT INTO your_table_name (login, password, user) VALUES (?, ?, ?)";
-  db.query(sql, [login, password, user], (err, result) => {
+  // Execute query with provided data
+  db.query(query, [title, description, status, date], (err, result) => {
     if (err) {
-      console.error(err);
-      res.status(500).send("Ошибка при добавлении данных");
+      console.error("Error inserting task:", err);
+      res.status(500).send("Server error");
     } else {
-      res.send("Пользователь успешно добавлен");
+      res.status(201).send({
+        id: result.insertId,
+        title,
+        description,
+        status,
+        date,
+      });
     }
   });
 });
 
-// Start the server and listen on all network interfaces (0.0.0.0)
-app.listen(port, "0.0.0.0", () => {
-  console.log(`Сервер запущен и доступен на порту ${port}`);
+app.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}`);
 });
