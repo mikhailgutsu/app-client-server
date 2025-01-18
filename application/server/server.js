@@ -136,6 +136,36 @@ app.post("/register", (req, res) => {
   });
 });
 
+app.delete("/tasks/:id", (req, res) => {
+  const taskId = req.params.id;
+
+  // First, check if the task exists
+  const checkQuery = "SELECT * FROM tasks WHERE id = ?";
+  db.query(checkQuery, [taskId], (err, results) => {
+    if (err) {
+      console.error("Error checking task:", err);
+      return res.status(500).json({ error: "Server error" });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ error: "Task not found" });
+    }
+
+    // Task exists, proceed to delete
+    const deleteQuery = "DELETE FROM tasks WHERE id = ?";
+    db.query(deleteQuery, [taskId], (err, result) => {
+      if (err) {
+        console.error("Error deleting task:", err);
+        return res.status(500).json({ error: "Server error" });
+      }
+
+      res
+        .status(200)
+        .json({ message: "Task deleted successfully", id: taskId });
+    });
+  });
+});
+
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
