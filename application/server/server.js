@@ -46,6 +46,45 @@ app.post("/tasks", (req, res) => {
   });
 });
 
+// Example GET endpoint
+app.get("/tasks", (req, res) => {
+  const query = "SELECT * FROM tasks"; // Query to fetch all tasks from the table
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error fetching tasks:", err);
+      res.status(500).send("Server error");
+    } else {
+      res.status(200).json(results); // Send the results in JSON format
+    }
+  });
+});
+
+// POST endpoint for user login
+app.post("/login", (req, res) => {
+  const { username, password } = req.body; // Extract username and password from request body
+  const query = "SELECT * FROM users WHERE username = ? AND password = ?"; // Query to check user credentials
+
+  // Execute the query with the provided username and password
+  db.query(query, [username, password], (err, results) => {
+    if (err) {
+      console.error("Error during login:", err);
+      res.status(500).send("Server error");
+    } else if (results.length > 0) {
+      // User found, return user information
+      const user = results[0];
+      res.status(200).json({
+        id: user.id,
+        username: user.username,
+        email: user.email,
+      });
+    } else {
+      // No matching user found
+      res.status(401).send("Invalid username or password");
+    }
+  });
+});
+
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
