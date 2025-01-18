@@ -111,6 +111,31 @@ app.post("/login_page", (req, res) => {
   });
 });
 
+// Register Endpoint
+app.post("/register", (req, res) => {
+  const { login, password, user } = req.body;
+
+  if (!login || !password || !user) {
+    return res.status(400).json({ error: "All fields are required" });
+  }
+
+  const query =
+    "INSERT INTO login_page (login, password, user) VALUES (?, ?, ?)";
+
+  db.query(query, [login, password, user], (err, results) => {
+    if (err) {
+      console.error("Error inserting data into the database:", err);
+      return res.status(500).json({ error: "Server error" });
+    }
+    res.status(201).json({
+      id: results.insertId,
+      login,
+      user,
+      status: "User registered successfully",
+    });
+  });
+});
+
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
