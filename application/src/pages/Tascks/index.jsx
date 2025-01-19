@@ -24,7 +24,7 @@ const Tascks = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [date, setDate] = useState("");
-  const [priority, setPriority] = useState("normal");
+  const [status, setStatus] = useState("");
   const [dataTask, setDataTask] = useState();
 
   const handleClickOpenAddTasck = () => {
@@ -47,16 +47,17 @@ const Tascks = () => {
     getData();
   }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     try {
       const response = await axios.post("http://localhost:5000/tasks", {
-        title: "privet",
-        description: "description",
-        status: "done",
-        date: "12.01.2025",
+        title: title,
+        description: content,
+        status: status,
+        date: date,
       });
-      console.log(response.data);
+      if (response.data) {
+        window.location.reload();
+      }
     } catch (error) {
       console.error("Ошибка при добавлении данных:", error);
     }
@@ -85,11 +86,9 @@ const Tascks = () => {
     setOpenViewTasck(false);
   };
 
-  const handleFormSubmit = () => {
-    setTitle("");
-    setContent("");
-    setPriority("normal");
-    handleCloseAddTasck();
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    handleSubmit();
   };
 
   return (
@@ -101,7 +100,7 @@ const Tascks = () => {
             <AddCircleOutlineIcon
               color="primary"
               style={{ width: "20px" }}
-              onClick={handleSubmit}
+              onClick={handleClickOpenAddTasck}
             />
           </div>
           <div className={styles.ticketPlace}>
@@ -187,16 +186,25 @@ const Tascks = () => {
             onChange={(e) => setContent(e.target.value)}
           />
           <FormControl fullWidth margin="dense" className={styles.modal_input}>
-            <InputLabel>Priority</InputLabel>
+            <InputLabel>Status</InputLabel>
             <Select
-              value={priority}
-              onChange={(e) => setPriority(e.target.value)}
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
             >
-              <MenuItem value="normal">Normal</MenuItem>
-              <MenuItem value="medium">Medium</MenuItem>
-              <MenuItem value="high">High</MenuItem>
+              <MenuItem value="open">Open</MenuItem>
+              <MenuItem value="in work">In work</MenuItem>
+              <MenuItem value="testing">Testing</MenuItem>
+              <MenuItem value="done">Done</MenuItem>
             </Select>
           </FormControl>
+          <TextField
+            className={styles.modal_input}
+            fullWidth
+            label="Date"
+            margin="dense"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseAddTasck}>Cancel</Button>
@@ -204,6 +212,7 @@ const Tascks = () => {
             onClick={handleFormSubmit}
             color="primary"
             variant="contained"
+            disabled={!title || !content || !status || !date}
           >
             Add
           </Button>
