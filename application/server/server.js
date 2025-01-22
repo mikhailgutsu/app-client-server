@@ -43,7 +43,7 @@ db.connect((err) => {
 });
 
 /////////////////////////////////////////////////////////////
-/////////   ENDPOINTs  //////////////////////////////////////
+//           ENDPOINTs
 /////////////////////////////////////////////////////////////
 app.post("/tasks", (req, res) => {
   const { title, description, status, date } = req.body;
@@ -174,6 +174,27 @@ app.delete("/tasks/:id", (req, res) => {
         .status(200)
         .json({ message: "Task deleted successfully", id: taskId });
     });
+  });
+});
+
+//<----------------------------------   UPDATE task status
+app.put("/tasks/:id", (req, res) => {
+  const taskId = req.params.id;
+  const { status } = req.body;
+
+  const updateQuery = "UPDATE tasks SET status = ? WHERE id = ?";
+
+  db.query(updateQuery, [status, taskId], (err, result) => {
+    if (err) {
+      console.error("Error updating task status:", err);
+      return res.status(500).send("Server error");
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).send("Task not found");
+    }
+
+    res.status(200).json({ message: "Task status updated successfully" });
   });
 });
 

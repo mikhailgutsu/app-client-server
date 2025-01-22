@@ -6,7 +6,7 @@ const Login = () => {
   const [login, setLogin] = useState();
   const [password, setPassword] = useState();
   const [user, setUser] = useState();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -17,8 +17,11 @@ const Login = () => {
         password: password,
         user: user,
       });
+
       if (response.data) {
-        navigate('/tasks');
+        sessionStorage.setItem("userData", JSON.stringify(response.data));
+
+        navigate("/tasks");
       }
       console.log(response.data);
     } catch (error) {
@@ -55,12 +58,13 @@ const Login = () => {
           Submit
         </button>
       </form>
-      <Link style={{ color: 'black', marginTop: 20 }} to="/register">New Account</Link>
+      <Link style={{ color: "black", marginTop: 20 }} to="/register">
+        New Account
+      </Link>
     </div>
   );
 };
 
-// Inline styles
 const styles = {
   container: {
     display: "flex",

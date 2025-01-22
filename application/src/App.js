@@ -2,7 +2,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/home";
 import Login from "./pages/login";
-import About from "./pages/about";
+import About from "./pages/About/index";
 import Tasks from "./pages/Tascks";
 import NavBar from "./NavBar";
 import Register from "./pages/register";

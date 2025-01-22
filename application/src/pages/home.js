@@ -1,29 +1,44 @@
-import React from "react";
-import { useNavigate } from "react-router-dom"; // To handle navigation
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Function to navigate to Login page
-  const handleLoginClick = () => {
-    navigate("/login");
+  useEffect(() => {
+    const userData = sessionStorage.getItem("userData");
+    if (userData) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  const handleButtonClick = () => {
+    if (isLoggedIn) {
+      navigate("/tasks");
+    } else {
+      navigate("/login");
+    }
   };
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.heading}>Welcome to the Home Page!</h1>
+      <h1 style={styles.heading}>
+        {isLoggedIn
+          ? "Welcome back to the Home Page!"
+          : "Welcome to the Home Page!"}
+      </h1>
       <p style={styles.text}>
-        Manage your tasks efficiently with our task manager. Get started by
-        logging in.
+        {isLoggedIn
+          ? "Manage your tasks and stay productive. Click below to go to your tasks."
+          : "Manage your tasks efficiently with our task manager. Get started by logging in."}
       </p>
-      <button style={styles.button} onClick={handleLoginClick}>
-        Log In
+      <button style={styles.button} onClick={handleButtonClick}>
+        {isLoggedIn ? "Go to Tasks" : "Log In"}
       </button>
     </div>
   );
 };
 
-// Inline styles
 const styles = {
   container: {
     display: "flex",
@@ -57,11 +72,6 @@ const styles = {
     cursor: "pointer",
     transition: "background-color 0.3s ease",
   },
-};
-
-// Hover effect for the button
-styles.button["hover"] = {
-  backgroundColor: "#0056b3",
 };
 
 export default Home;
