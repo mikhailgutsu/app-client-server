@@ -1,27 +1,24 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
-const Login = () => {
+const Register = () => {
   const [login, setLogin] = useState();
   const [password, setPassword] = useState();
   const [user, setUser] = useState();
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log("Logging in:", login, user);
+    const randomFourDigitNumber = () => Math.floor(Math.random() * 9000) + 1000;
     try {
-      const response = await axios.post("http://localhost:5000/login_page", {
+      const response = await axios.post("http://localhost:5000/register", {
         login: login,
         password: password,
         user: user,
       });
-
       if (response.data) {
-        sessionStorage.setItem("userData", JSON.stringify(response.data));
-
-        navigate("/tasks");
+        navigate('/login');
       }
       console.log(response.data);
     } catch (error) {
@@ -31,7 +28,7 @@ const Login = () => {
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.heading}>Log In</h1>
+      <h1 style={styles.heading}>Sign Up</h1>
       <form style={styles.form} onSubmit={onSubmit}>
         <input
           type="text"
@@ -58,13 +55,12 @@ const Login = () => {
           Submit
         </button>
       </form>
-      <Link style={{ color: "black", marginTop: 20 }} to="/register">
-        New Account
-      </Link>
+      <Link style={{ color: 'black', marginTop: 20 }} to="/login">Log In</Link>
     </div>
   );
 };
 
+// Inline styles
 const styles = {
   container: {
     display: "flex",
@@ -105,6 +101,9 @@ const styles = {
     cursor: "pointer",
     transition: "background-color 0.3s ease",
   },
+  link: {
+    color: 'black !important',
+  }
 };
 
-export default Login;
+export default Register;
